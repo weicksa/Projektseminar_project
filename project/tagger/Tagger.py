@@ -22,5 +22,5 @@ class Tagger(object):
     @staticmethod
     def readCoNLL(filename):
         pass
-
+    # this is a comment made by Sandro
 
