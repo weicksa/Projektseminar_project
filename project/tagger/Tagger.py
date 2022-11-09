@@ -6,8 +6,8 @@ Created on Oct 29, 2020
 
 import io
 
-from .data import Sentence
-from .data import Token
+from data import Sentence
+from data import Token
 
 class Tagger(object):
     '''
@@ -27,8 +27,8 @@ class Tagger(object):
             for line in lines:
                 # split could be changed to split at \t if needed
                 spl = line.split()
-                # assumption: token, gold, and prediction are in second, third and fourth column of CoNLL
-                res_list.append(spl[1:4])
+                # CoNLL has form: second,third and fourth column are wordforms, then gold(?), then pred(?)
+                res_list.append(Sentence(spl[1:6]))
         return res_list
     # this is a comment made by Sandro
 
