@@ -6,8 +6,8 @@ Created on Oct 29, 2020
 
 import io
 
-from data import Sentence
-from data import Token
+from .data import Sentence
+from .data import Token
 
 class Tagger(object):
     '''
