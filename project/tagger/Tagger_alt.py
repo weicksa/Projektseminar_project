@@ -46,7 +46,6 @@ class Tagger(object):
                     sent_list.append(tok)
             except IndexError:
                 pass
-        print(token_counter)
         return res_list
     # this is a comment made by Sandro
 
