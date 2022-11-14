@@ -11,4 +11,12 @@ class Evaluation(object):
 
     @staticmethod
     def accuracy(data):
-        pass
+        correct = 0
+        total = 0
+        for sentence in data:
+            for tok in sentence.tokens:
+                total += 1
+                if tok.label == tok.prediction:
+                    correct += 1
+
+        return correct / total
