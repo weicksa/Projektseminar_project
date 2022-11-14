@@ -7,15 +7,16 @@ class StringMapper(object):
     def __init__(self):
         self.map = {}
         self.inverse_map = {}
-        self.counter = 1
+        self.counter = 0
 
     def lookup(self, s: str) -> int:
         if s in self.map:
             return self.map[s]
         else:
+            self.counter += 1
             self.map[s] = self.counter
             self.inverse_map[self.counter] = s
-            self.counter += 1
+            return self.counter
 
     def inverseLookup(self, featureIndex: int)-> str:
         return self.inverse_map[featureIndex]
