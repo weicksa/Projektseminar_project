@@ -14,7 +14,6 @@ class TaggerTest(unittest.TestCase):
         self.path = "project/Data/"
 
     def testReadCoNLL(self):
-
         # // test that empty file  produces empty data structures
         ls = Tagger.readCoNLL(self.path + "file-empty.txt")
         self.assertEqual(0, len(ls), "Empty file should contain no sentences")
@@ -32,8 +31,8 @@ class TaggerTest(unittest.TestCase):
         self.assertEqual(719530, self.countWords(ls), "Tiger train file word count should be 719530")
 
         # // not relevant yet.
-        # // es = Tagger.readCoNLL(self.path + "wsj_dev.treetags.conll09")
-        # // Tagger.extractInstances(es,"NN","NP")
+        es = Tagger.readCoNLL(self.path + "wsj_dev.treetags.conll09")
+        Tagger.extractInstances(es, "NN", "NP")
 
     def countWords(self, ss):
         counter = 0

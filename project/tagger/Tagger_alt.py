@@ -17,7 +17,24 @@ class Tagger(object):
 
     @staticmethod
     def extractInstances(data, goldLabel, predLabel):
-        pass
+        res_list = []
+        for sentence in data:
+            for i in range(sentence.length()):
+                token = sentence.get(i)
+                if token.label == goldLabel and token.prediction == predLabel:
+                    try:
+                        for a in range(i-3,i):
+                            print(f"{sentence.get(a).word}\t{sentence.get(a).label}\t{sentence.get(a).prediction}")
+                    except IndexError:
+                        pass
+                    print(f"*{token.word}*\t{token.label}\t{token.prediction}")
+                    try:
+                        for b in range(i+1,i+4):
+                            print(f"{sentence.get(b).word}\t{sentence.get(b).label}\t{sentence.get(b).prediction}")
+                    except IndexError:
+                        pass
+                    print("*******************")
+
 
     @staticmethod
     def readCoNLL(filename):
