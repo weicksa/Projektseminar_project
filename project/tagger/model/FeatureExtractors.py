@@ -3,11 +3,21 @@ from ..data.Sentence import Sentence
 from ..data.StringMapper import StringMapper
 
 
-
-
-
 class FeatureExtractors(object):
 
+    def extractFeatures(self, token):
+        # call extract(prev/next/current)word, extractSuffices
+        # store results in one list
+        mapper = StringMapper()
+        features = []
+        features.append((extractPrevWord(mapper, token)))
+        features.append(extractCurrentWord(mapper, token))
+        features.append(extractNextWord(mapper, token))
+        features.append((extractSuffices(mapper, token)))
+        token.features = features
+        print(features)
+        print(mapper.map)
+        # token.features -> overwrite with new feature list
     def extractAllFeatures(self, corpus):
         # run through whole corpus, use extractFeatures on every token
         # return lists in list?
@@ -61,15 +71,5 @@ def extractSuffices(mapper, token):
             a = len(word) - i
             mapper.lookup(("suf=" + word[a:]))
 
-def extractFeatures(token):
-    # call extract(prev/next/current)word, extractSuffices
-    # store results in one list
-    mapper = StringMapper()
-    features = []
-    features.append((extractPrevWord(mapper, token)))
-    features.append(extractCurrentWord(mapper, token))
-    features.append(extractNextWord(mapper, token))
-    features.append((extractSuffices(mapper, token)))
-    print(features)
-    print(mapper.map)
-    # token.features -> overwrite with new feature list
+
+

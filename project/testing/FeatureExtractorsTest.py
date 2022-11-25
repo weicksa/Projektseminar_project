@@ -8,7 +8,9 @@ import unittest
 from ..tagger.Tagger import Tagger
 from ..tagger.model.FeatureExtractors import FeatureExtractors
 
-
+"""
+changed Tagger.readData to Tagger.readCoNLL, because Tagger.readData does not exist
+"""
 class Test(unittest.TestCase):
 
     def setUp(self):
@@ -19,7 +21,7 @@ class Test(unittest.TestCase):
         s = sentences[0]
         fes = FeatureExtractors()
         for token in s.tokens:
-            extractFeatures(token)
+            fes.extractFeatures(token)
         self.assertEqual(4, len(s.get(0).features))
         self.assertEqual(6, len(s.get(1).features))
         self.assertEqual(7, len(s.get(2).features))
@@ -83,6 +85,4 @@ class Test(unittest.TestCase):
 
 if __name__ == "__main__":
     # import sys;sys.argv = ['', 'Test.testExtractFeatures']
-    fes = FeatureExtractors()
-    extractFeatures()
     unittest.main()
