@@ -1,16 +1,16 @@
 class FeatureExtractor(object):
 
-    def extractPrevWord(self): #input: Token
+    def extractPrevWord(self) -> int: #input: Token
         # iterate over sentences, get previous word
         # if prev word not there (sentence start) create pseudo token
         # use string mapper
         pass
 
-    def extractNextWord(self): #input: Token
+    def extractNextWord(self) -> int: #input: Token
         # iterate over sentences, get current word
         # use string mapper
         pass
-    def extractCurrentWord(self): #input: Token
+    def extractCurrentWord(self) -> int: #input: Token
         # iterate over sentences, get next word
         # if prev word not there (sentence end) create pseudo token
         # use string mapper
@@ -20,7 +20,7 @@ class FeatureExtractor(object):
         # Eingabe: ein Token:
         #   if len(token) >= 6:
         #       use str slicing
-        #   else:
+        #   else (Länge wort -1):
         #       use str slicing
         pass
 
