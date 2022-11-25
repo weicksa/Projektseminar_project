@@ -7,13 +7,14 @@ import unittest
 
 from ..tagger.Tagger import Tagger
 from ..tagger.data.StringMapper import StringMapper
-# from ..tagger.model.FeatureExtractors import FeatureExtractors
+from ..tagger.model.FeatureExtractors import FeatureExtractors
 
 
 class StringMapperTest(unittest.TestCase):
 
     def setUp(self):
         self.filename = "../Data/file-onesent.txt"
+
 
     # /**
     #   Create int features from String features for a couple of tokens
@@ -56,24 +57,26 @@ class StringMapperTest(unittest.TestCase):
     # /**
     #   Test correct serialization of int features
     #  **/
-    """
-    def testSerialization(self):
-        sentences = Tagger.readData("../Data/file-onesent.txt")
-        fes = FeatureExtractors()
-        fes.extractAllFeatures(sentences)
-        fes.writeToFile(sentences, "../Data/file-onesent.svmmulti")
-        fes.sm.toFile("../Data/file-onesent.fm")
 
-        smDeser = StringMapper.fromFile("../Data/file-onesent.fm");
-        sentencesDeser = FeatureExtractors.readFromFile("../Data/file-onesent.svmmulti")
+    def testSerialization(self):
+        sentences = Tagger.readCoNLL("project/Data/file-onesent.txt")
+        fes = FeatureExtractors()
+        sm = StringMapper()
+        fes.extractAllFeatures(sentences)
+        fes.writeToFile(sentences, "project/Data/file-onesent.svmmulti")
+        sm.toFile("project/Data/file-onesent.fm")
+
+        smDeser = sm.fromFile("project/Data/file-onesent.fm")
+        sentencesDeser = fes.readFromFile("project/Data/file-onesent.svmmulti")
 
         # // check for all tokens that the original and recovered features are identical
         for i in range(len(sentences)):
             for j in range(sentences[i].length()):
-                prettyW = self.prettyPrintFeatures(sentences[i].get(j).features, fes.sm)
+                prettyW = self.prettyPrintFeatures(sentences[i].get(j).features, sm)
                 prettyWDeser = self.prettyPrintFeatures(sentencesDeser[i].get(j).features, smDeser)
                 print("prettyW: {}".format(prettyW))
                 self.assertEqual(prettyW, prettyWDeser)
+
 
     #   /** given an array of feature IDs, print the original feature strings
     #       e.g. for debugging purposes **/
@@ -86,7 +89,8 @@ class StringMapperTest(unittest.TestCase):
 
         return print_str
         
-    """
+
+
 
 
 if __name__ == "__main__":

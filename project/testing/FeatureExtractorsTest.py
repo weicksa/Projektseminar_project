@@ -10,14 +10,17 @@ from ..tagger.model.FeatureExtractors import FeatureExtractors
 
 """
 changed Tagger.readData to Tagger.readCoNLL, because Tagger.readData does not exist
+changed self.filename to self.path and changed all file imports and exports accordingly
 """
+
+
 class Test(unittest.TestCase):
 
     def setUp(self):
-        self.filename = "../Data/file-onesent.txt"
+        self.path = "project/Data/"
 
     def testExtractFeatures(self):
-        sentences = Tagger.readCoNLL("project/Data/file-onesent.txt")
+        sentences = Tagger.readCoNLL(self.path + "file-onesent.txt")
         s = sentences[0]
         fes = FeatureExtractors()
         for token in s.tokens:
@@ -40,7 +43,7 @@ class Test(unittest.TestCase):
         # print("Features: {}".format(s.get(0).features))
 
     def testExtractAllFeatures(self):
-        ss = Tagger.readCoNLL(self.filename)
+        ss = Tagger.readCoNLL(self.path + "file-onesent.txt")
         FeatureExtractors().extractAllFeatures(ss)
         s = ss[0]
         self.assertEqual(4, len(s.get(0).features))
@@ -60,19 +63,20 @@ class Test(unittest.TestCase):
         self.assertEqual(0, self.intersection(s.get(2).features, s.get(5).features))
 
     def testWriteToFile(self):
-        ss = Tagger.readCoNLL(self.filename)
+        ss = Tagger.readCoNLL(self.path + "file-onesent.txt")
         fes = FeatureExtractors()
         fes.extractAllFeatures(ss)
-        fes.writeToFile(ss, "file-onesent.svmmulti")
-        fes.readFromFile("file-onesent.svmmulti")
+        fes.writeToFile(ss, self.path + "file-onesent.svmmulti")
+        fes.readFromFile(self.path + "file-onesent.svmmulti")
 
     def testReadFromFile(self):
-        ss = Tagger.readCoNLL("../Data/tiger-2.2.train.conll09")
+        ss = Tagger.readCoNLL(self.path + "tiger-2.2.train.conll09")
         fes = FeatureExtractors()
         fes.extractAllFeatures(ss)
-        fes.writeToFile(ss, "../Data/file-tiger.svmmulti")
-        ss = FeatureExtractors.readFromFile("../Data/file-tiger.svmmulti")
+        fes.writeToFile(ss, self.path + "file-tiger.svmmulti")
+        ss = fes.readFromFile(self.path + "file-tiger.svmmulti")
         #        # // test robustness on complete tiger train set
+        print(len(ss[-1].tokens))
         self.assertEqual(40472, len(ss), "Tiger train file should contain 40472 sentences")
         self.assertEqual(719530, self.countWords(ss), "Tiger train file word count should be 719530")
 

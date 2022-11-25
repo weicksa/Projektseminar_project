@@ -1,4 +1,3 @@
-
 class StringMapper(object):
 
     # zu Aufgabe 3
@@ -18,7 +17,30 @@ class StringMapper(object):
             self.inverse_map[self.counter] = s
             return self.counter
 
-    def inverseLookup(self, featureIndex: int)-> str:
+    def inverseLookup(self, featureIndex: int) -> str:
         return self.inverse_map[featureIndex]
+
     # hilfreich um im nachhinein interpretieren zu können, welche features
     # besonders gut sind
+
+    def toFile(self, filename: str):
+        with open(filename, "w") as file:
+            for key in self.map:
+                file.write(f"{key}, {self.map[key]}")
+
+    def fromFile(self, filename: str):
+        mapper = StringMapper()
+
+        reconstructed_map = {}
+        reconstructed_inverse_map = {}
+        with open(filename) as file:
+            lines = file.readlines()
+            for line in lines:
+                spl = line.split()
+                reconstructed_map[spl[0]] = spl[1]
+                reconstructed_inverse_map[spl[1]] = spl[0]
+
+        mapper.map = reconstructed_map
+        mapper.inverse_map = reconstructed_inverse_map
+
+        return mapper

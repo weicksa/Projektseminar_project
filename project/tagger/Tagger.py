@@ -39,6 +39,8 @@ class Tagger(object):
         res_list = []
         i = 1
         token_counter = 0
+        word_prev = None
+        word_next = None
         with open(filename) as source:
             lines = source.readlines()
             length = len(lines) - 1
@@ -61,6 +63,18 @@ class Tagger(object):
                     sent_list.append(tok)
             except IndexError:
                 pass
+
+        for sent in res_list:
+            for i in range(sent.length()):
+                current_token = sent.get(i)
+                try:
+                    current_token.previous = sent.get(i-1).word
+                except IndexError:
+                    current_token.previous = None
+                try:
+                    current_token.next = sent.get(i+1).word
+                except IndexError:
+                    current_token.next = None
         return res_list
     # this is a comment made by Sandro
 
