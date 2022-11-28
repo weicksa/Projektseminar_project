@@ -75,6 +75,11 @@ class Tagger(object):
                     current_token.next = sent.get(i+1).word
                 except IndexError:
                     current_token.next = None
+
+        try:
+            print(f"from tagger: {res_list[-1].toString()}")
+        except IndexError:
+            pass
         return res_list
     # this is a comment made by Sandro
 

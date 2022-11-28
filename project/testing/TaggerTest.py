@@ -5,7 +5,7 @@ Created on Oct 30, 2020
 '''
 import unittest
 
-from ..tagger.Tagger_alt import *
+from ..tagger.Tagger import *
 
 
 class TaggerTest(unittest.TestCase):

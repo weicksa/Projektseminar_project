@@ -7,6 +7,7 @@ class FeatureExtractors(object):
 
     def __init__(self):
         self.mapper = StringMapper()
+        self.inverse_mapper = {}
 
     def extractFeatures(self, token):
         # call extract(prev/next/current)word, extractSuffices
@@ -39,10 +40,11 @@ class FeatureExtractors(object):
         """
         with open(filename, "w") as file:
             target_mapper = StringMapper()
+            # increasse iterations by one -> IndexError
             for i in range(len(sent)):
                 sentence = sent[i]
                 for token in sentence.tokens:
-
+                    self.inverse_mapper[target_mapper.lookup(token.word)] = token.word
                     line = f"{target_mapper.lookup(token.word)}"
                     sort_features = sorted(token.features)
                     for feature in sort_features:
@@ -53,32 +55,49 @@ class FeatureExtractors(object):
 
     def readFromFile(self, filename: str):
 
+        sentence_counter = 0
+        sentences_indexes = []
         res_list = []
         with open(filename) as source:
             sent_list = []
             sent_index = 0
 
             lines = source.readlines()
-
+            print(f"from read: {lines[-1]}")
+            line_null = lines[0]
+            split_null = line_null.split()
+            sent_index = split_null[-1]
             for line in lines:
                 spl = line.split()
-                try:
-                    if spl[-1] == sent_index:
-                        tok = Token(word=spl[0])
-                        sent_list.append(tok)
-                    else:
-                        copy_sent_list = sent_list.copy()
-                        sent = Sentence(tokens=copy_sent_list)
-                        res_list.append(sent)
-                        sent_list.clear()
-                        sent_index = spl[-1]
-                        tok = Token(word=spl[0])
-                        sent_list.append(tok)
-                except IndexError:
-                    pass
-            sent = Sentence(tokens=copy_sent_list)
-            res_list.append(sent)
-        return res_list
+
+                if spl[-1] == sent_index:
+                    tok = Token(word=spl[0])
+                    sent_list.append(tok)
+                else:
+                    copy_sent_list = sent_list.copy()
+                    sent = Sentence(tokens=copy_sent_list)
+                    res_list.append(sent)
+                    sentences_indexes.append((sent_index, spl[-1]))
+                    # print(f"sent_index: {sent_index}, split[-1]: {spl[-1]}")
+                    sentence_counter += 1
+
+                    sent_list.clear()
+                    sent_index = spl[-1]
+                    tok = Token(word=spl[0])
+                    sent_list.append(tok)
+
+                    # sent = Sentence(tokens=copy_sent_list)
+                    # res_list.append(sent)
+
+            sentence = Sentence(tokens=copy_sent_list)
+            res_list.append(sentence)
+
+            sent = res_list[-1]
+            last_sent = []
+            for token in sent.tokens:
+                last_sent.append(self.inverse_mapper[int(token.word)])
+            print(f"feature: {last_sent}")
+            return res_list
 
 
 def extractPrevWord(mapper, token) -> int:  # input: Token

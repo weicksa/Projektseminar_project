@@ -76,7 +76,7 @@ class Test(unittest.TestCase):
         fes.writeToFile(ss, self.path + "file-tiger.svmmulti")
         ss = fes.readFromFile(self.path + "file-tiger.svmmulti")
         #        # // test robustness on complete tiger train set
-        print(len(ss[-1].tokens))
+        print(f"test: {len(ss[-1].tokens)}")
         self.assertEqual(40472, len(ss), "Tiger train file should contain 40472 sentences")
         self.assertEqual(719530, self.countWords(ss), "Tiger train file word count should be 719530")
 
