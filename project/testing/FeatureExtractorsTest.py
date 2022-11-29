@@ -70,6 +70,7 @@ class Test(unittest.TestCase):
         fes.readFromFile(self.path + "file-onesent.svmmulti")
 
     def testReadFromFile(self):
+
         ss = Tagger.readCoNLL(self.path + "tiger-2.2.train.conll09")
         fes = FeatureExtractors()
         fes.extractAllFeatures(ss)
@@ -77,6 +78,17 @@ class Test(unittest.TestCase):
         ss = fes.readFromFile(self.path + "file-tiger.svmmulti")
         #        # // test robustness on complete tiger train set
         print(f"test: {len(ss[-1].tokens)}")
+
+        # test read from file for smaller file
+        one_sent = Tagger.readCoNLL(self.path+ "file-onesent.txt")
+        one_fes = FeatureExtractors()
+        one_fes.extractAllFeatures(one_sent)
+        fes.writeToFile(one_sent, self.path + "file-onesent.svmmulti")
+        one_sent = one_fes.readFromFile(self.path + "file-onesent.svmmulti")
+        self.assertEqual(1, len(one_sent))
+        self.assertEqual(9, self.countWords(one_sent))
+        # end of new test
+
         self.assertEqual(40472, len(ss), "Tiger train file should contain 40472 sentences")
         self.assertEqual(719530, self.countWords(ss), "Tiger train file word count should be 719530")
 

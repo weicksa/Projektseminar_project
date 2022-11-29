@@ -26,7 +26,7 @@ class StringMapper(object):
     def toFile(self, filename: str):
         with open(filename, "w") as file:
             for key in self.map:
-                file.write(f"{key}, {self.map[key]}")
+                file.write(f"{key} {self.map[key]}\n")
 
     def fromFile(self, filename: str):
         mapper = StringMapper()

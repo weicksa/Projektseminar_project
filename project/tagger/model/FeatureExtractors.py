@@ -88,14 +88,16 @@ class FeatureExtractors(object):
 
                     # sent = Sentence(tokens=copy_sent_list)
                     # res_list.append(sent)
-
+            copy_sent_list = sent_list.copy()
             sentence = Sentence(tokens=copy_sent_list)
             res_list.append(sentence)
 
             sent = res_list[-1]
             last_sent = []
+            """
             for token in sent.tokens:
                 last_sent.append(self.inverse_mapper[int(token.word)])
+            """
             print(f"feature: {last_sent}")
             return res_list
 

@@ -13,8 +13,7 @@ from ..tagger.model.FeatureExtractors import FeatureExtractors
 class StringMapperTest(unittest.TestCase):
 
     def setUp(self):
-        self.filename = "../Data/file-onesent.txt"
-
+        self.path = "project/Data/"
 
     # /**
     #   Create int features from String features for a couple of tokens
@@ -59,15 +58,18 @@ class StringMapperTest(unittest.TestCase):
     #  **/
 
     def testSerialization(self):
-        sentences = Tagger.readCoNLL("project/Data/file-onesent.txt")
+        sentences = Tagger.readCoNLL(self.path + "file-onesent.txt")
         fes = FeatureExtractors()
+        # if sm is initialized like this, it is not used and remains empty
         sm = StringMapper()
         fes.extractAllFeatures(sentences)
-        fes.writeToFile(sentences, "project/Data/file-onesent.svmmulti")
-        sm.toFile("project/Data/file-onesent.fm")
+        fes.writeToFile(sentences, self.path + "file-onesent.svmmulti")
+        # added mor sensible sm
+        sm = fes.mapper
+        sm.toFile(self.path + "file-onesent.fm")
 
-        smDeser = sm.fromFile("project/Data/file-onesent.fm")
-        sentencesDeser = fes.readFromFile("project/Data/file-onesent.svmmulti")
+        smDeser = sm.fromFile(self.path + "file-onesent.fm")
+        sentencesDeser = fes.readFromFile(self.path + "file-onesent.svmmulti")
 
         # // check for all tokens that the original and recovered features are identical
         for i in range(len(sentences)):
@@ -76,7 +78,6 @@ class StringMapperTest(unittest.TestCase):
                 prettyWDeser = self.prettyPrintFeatures(sentencesDeser[i].get(j).features, smDeser)
                 print("prettyW: {}".format(prettyW))
                 self.assertEqual(prettyW, prettyWDeser)
-
 
     #   /** given an array of feature IDs, print the original feature strings
     #       e.g. for debugging purposes **/
@@ -88,9 +89,6 @@ class StringMapperTest(unittest.TestCase):
                 print_str += " "
 
         return print_str
-        
-
-
 
 
 if __name__ == "__main__":
