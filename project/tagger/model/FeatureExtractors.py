@@ -71,7 +71,12 @@ class FeatureExtractors(object):
                 spl = line.split()
 
                 if spl[-1] == sent_index:
-                    tok = Token(word=spl[0])
+                    # add features
+                    tok_features = []
+                    for index in range(1,len(spl)-2):
+                        feat_spl = spl[index].split(":")
+                        tok_features.append(int(feat_spl[0]))
+                    tok = Token(word=spl[0], features=tok_features)
                     sent_list.append(tok)
                 else:
                     copy_sent_list = sent_list.copy()
@@ -83,7 +88,11 @@ class FeatureExtractors(object):
 
                     sent_list.clear()
                     sent_index = spl[-1]
-                    tok = Token(word=spl[0])
+                    tok_features = []
+                    for index in range(1, len(spl) - 2):
+                        feat_spl = spl[index].split(":")
+                        tok_features.append(int(feat_spl[0]))
+                    tok = Token(word=spl[0], features=tok_features)
                     sent_list.append(tok)
 
                     # sent = Sentence(tokens=copy_sent_list)
