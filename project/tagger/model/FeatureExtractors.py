@@ -27,8 +27,6 @@ class FeatureExtractors(object):
             for token in sentence.tokens:
                 self.extractFeatures(token)
 
-        pass
-
     def writeToFile(self, sent, filename: str):
         """
          <line> .=. <target> <feature>:<value> <feature>:<value> ... <feature>:<value> # <info>
@@ -46,8 +44,9 @@ class FeatureExtractors(object):
                 for token in sentence.tokens:
                     self.inverse_mapper[target_mapper.lookup(token.word)] = token.word
                     line = f"{target_mapper.lookup(token.word)}"
+                    # test without sort --> ist richtig, relevant ist konstante anordnung von features (prev, word, next, suf...)
                     sort_features = sorted(token.features)
-                    for feature in sort_features:
+                    for feature in token.features:
                         line += f" {feature}:1"
 
                     line += f" # {i} \n"

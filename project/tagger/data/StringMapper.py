@@ -14,11 +14,11 @@ class StringMapper(object):
         else:
             self.counter += 1
             self.map[s] = self.counter
-            self.inverse_map[self.counter] = s
+            self.inverse_map[str(self.counter)] = s
             return self.counter
 
     def inverseLookup(self, featureIndex: int) -> str:
-        return self.inverse_map[featureIndex]
+        return self.inverse_map[str(featureIndex)]
 
     # hilfreich um im nachhinein interpretieren zu können, welche features
     # besonders gut sind
