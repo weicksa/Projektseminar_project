@@ -5,6 +5,9 @@ from .Token import *
 class ConfusionMatrix(object):
 
     def __init__(self, data):
+        # initialize the ConfusionMatrix, it is a Dictionary in a Dictionary
+        # the outer dictionary contains the gold_labels, the inner dictionary contains
+        # prediction_labels and the corresponding counts
         self.data = data
         outer_dict = {}
         for sentence in data:
@@ -34,6 +37,7 @@ class ConfusionMatrix(object):
             return 0
 
     def print(self, maxDim: int):
+        # print the matrix in a sensible format
         labels = []
         labels.append("  ")
         labels.extend([key for key, val in self.sort[:maxDim]])
@@ -49,12 +53,5 @@ class ConfusionMatrix(object):
             print(f"{vals}")
             vals.clear()
 
-
-        # dictionary[gold][dictionary[pred]]
-
-        # for key in dict:
-        #   sorted_list.append((key, dict[key][key]))
-
-        # for el, va in sortedlist[:max_dim+1]:
 
 

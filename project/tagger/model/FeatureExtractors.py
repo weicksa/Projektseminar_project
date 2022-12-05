@@ -22,7 +22,6 @@ class FeatureExtractors(object):
 
     def extractAllFeatures(self, corpus):
         # run through whole corpus, use extractFeatures on every token
-        # return lists in list?
         for sentence in corpus:
             for token in sentence.tokens:
                 self.extractFeatures(token)
@@ -36,55 +35,54 @@ class FeatureExtractors(object):
         <info> .=. <string>
         3 1:0.43 3:0.12 9284:0.2 # abcdef
         """
+        # save Sentence(es) to svmmulti file, the digit after the # indicates the sentence
         with open(filename, "w") as file:
             target_mapper = StringMapper()
-            # increasse iterations by one -> IndexError
             for i in range(len(sent)):
                 sentence = sent[i]
                 for token in sentence.tokens:
-                    self.inverse_mapper[target_mapper.lookup(token.word)] = token.word
                     line = f"{target_mapper.lookup(token.word)}"
-                    # test without sort --> ist richtig, relevant ist konstante anordnung von features (prev, word, next, suf...)
-                    sort_features = sorted(token.features)
                     for feature in token.features:
                         line += f" {feature}:1"
-
                     line += f" # {i} \n"
                     file.write(line)
 
     def readFromFile(self, filename: str):
-
         sentence_counter = 0
         sentences_indexes = []
         res_list = []
+        # read a file in the smvmulti format
         with open(filename) as source:
             sent_list = []
             sent_index = 0
-
             lines = source.readlines()
-            print(f"from read: {lines[-1]}")
             line_null = lines[0]
             split_null = line_null.split()
+            # initialize sent_index with the first sent_index value from file
             sent_index = split_null[-1]
+
             for line in lines:
                 spl = line.split()
-
+                # check wether the current line still belongs to the same sentence
                 if spl[-1] == sent_index:
                     # add features
                     tok_features = []
-                    for index in range(1,len(spl)-2):
+                    for index in range(1, len(spl) - 2):
                         feat_spl = spl[index].split(":")
                         tok_features.append(int(feat_spl[0]))
                     tok = Token(word=spl[0], features=tok_features)
                     sent_list.append(tok)
+
+                # if the current line belongs to a new sentence, add the old sentence to
+                # the res_list
                 else:
                     copy_sent_list = sent_list.copy()
                     sent = Sentence(tokens=copy_sent_list)
                     res_list.append(sent)
                     sentences_indexes.append((sent_index, spl[-1]))
-                    # print(f"sent_index: {sent_index}, split[-1]: {spl[-1]}")
                     sentence_counter += 1
 
+                    # add the new token to a fresh sentence
                     sent_list.clear()
                     sent_index = spl[-1]
                     tok_features = []
@@ -94,19 +92,11 @@ class FeatureExtractors(object):
                     tok = Token(word=spl[0], features=tok_features)
                     sent_list.append(tok)
 
-                    # sent = Sentence(tokens=copy_sent_list)
-                    # res_list.append(sent)
+            # add the last sentence to the res_list
             copy_sent_list = sent_list.copy()
             sentence = Sentence(tokens=copy_sent_list)
             res_list.append(sentence)
 
-            sent = res_list[-1]
-            last_sent = []
-            """
-            for token in sent.tokens:
-                last_sent.append(self.inverse_mapper[int(token.word)])
-            """
-            print(f"feature: {last_sent}")
             return res_list
 
 

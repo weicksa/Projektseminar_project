@@ -41,6 +41,9 @@ class TaggerTest(unittest.TestCase):
 
         return counter
 
+    def testPipeline(self):
+        pipeline(self.path + "wsj_train.conll09", self.path + "wsj_dev.conll09")
+
 
 if __name__ == "__main__":
     # import sys;sys.argv = ['', 'Test.testName']

@@ -11,20 +11,26 @@ class BinaryWeights(object):
 
     def score(self, featureVector):
         scalar = 0
-        for i in range(len(featureVector)):
-            # print(i)
-            if featureVector[i] not in self.weights:
+        # iterate over featureVector, compute score based on scalar
+        # with all feature-weight pairs
+        for el in featureVector:
+            if el not in self.weights:
                 pass
             else:
-                scalar += 1 * self.weights[featureVector[i]]
+                scalar += 1 * self.weights[el]
+        # special case for bias, is always added, independent of features
         scalar += 1 * self.weights[0]
         return scalar
 
     def update(self, featureVector, learningRate):
+        # set bias to learning rate
         self.weights[0] = learningRate
-        for i in range(len(featureVector)):
-            print(featureVector[i])
-            if featureVector[i] in self.weights:
-                self.weights[featureVector[i]] += learningRate
+
+        # iterate over features, if there already is a weight for el,
+        # add learning rate, if there is not, initialize it with the value of
+        # the learningRate
+        for el in featureVector:
+            if el in self.weights:
+                self.weights[el] += learningRate
             else:
-                self.weights[featureVector[i]] = learningRate
+                self.weights[el] = learningRate
