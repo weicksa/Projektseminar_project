@@ -6,6 +6,7 @@ Created on Oct 29, 2020
 
 from .data.Token import Token
 from .data.Sentence import Sentence
+from .data.StringMapper import StringMapper
 
 
 class Tagger(object):
@@ -36,6 +37,7 @@ class Tagger(object):
 
     @staticmethod
     def readCoNLL(filename):
+        class_map = StringMapper()
         res_list = []
         i = 1
         token_counter = 0
@@ -50,7 +52,7 @@ class Tagger(object):
             spl = line.split()
             try:
                 if len(spl) > 0:
-                    tok = Token(word=spl[1], label=spl[4], prediction=spl[5])
+                    tok = Token(word=spl[1], label=spl[4], prediction=spl[5], correctLabelIndex=class_map.lookup(spl[4]))
                     sent_list.append(tok)
                 else:
                     token_counter += len(sent_list)

@@ -16,7 +16,7 @@ class Sentence(object):
         '''
         self.tokens = tokens
 
-    def length(self):
+    def length(self)-> int:
         return len(self.tokens)
 
     def isEmpty(self):
