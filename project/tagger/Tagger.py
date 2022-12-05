@@ -44,7 +44,7 @@ def pipeline(train, dev):
     matrix = ConfusionMatrix(develop)
     accuracy = Evaluation.accuracy(develop)
 
-    matrix.print()
+    matrix.print(10)
     print(accuracy)
 
     pass
