@@ -18,9 +18,10 @@ class Test(unittest.TestCase):
 
     def setUp(self):
         self.path = "project/Data/"
+        self.tagger = Tagger()
 
     def testExtractFeatures(self):
-        sentences = Tagger.readCoNLL(self.path + "file-onesent.txt")
+        sentences = self.tagger.readCoNLL(self.path + "file-onesent.txt")
         s = sentences[0]
         fes = FeatureExtractors()
         for token in s.tokens:
@@ -43,7 +44,7 @@ class Test(unittest.TestCase):
         # print("Features: {}".format(s.get(0).features))
 
     def testExtractAllFeatures(self):
-        ss = Tagger.readCoNLL(self.path + "file-onesent.txt")
+        ss = self.tagger.readCoNLL(self.path + "file-onesent.txt")
         FeatureExtractors().extractAllFeatures(ss)
         s = ss[0]
         self.assertEqual(4, len(s.get(0).features))
@@ -63,7 +64,7 @@ class Test(unittest.TestCase):
         self.assertEqual(0, self.intersection(s.get(2).features, s.get(5).features))
 
     def testWriteToFile(self):
-        ss = Tagger.readCoNLL(self.path + "file-onesent.txt")
+        ss = self.tagger.readCoNLL(self.path + "file-onesent.txt")
         fes = FeatureExtractors()
         fes.extractAllFeatures(ss)
         fes.writeToFile(ss, self.path + "file-onesent.svmmulti")
@@ -71,7 +72,7 @@ class Test(unittest.TestCase):
 
     def testReadFromFile(self):
 
-        ss = Tagger.readCoNLL(self.path + "tiger-2.2.train.conll09")
+        ss = self.tagger.readCoNLL(self.path + "tiger-2.2.train.conll09")
         fes = FeatureExtractors()
         fes.extractAllFeatures(ss)
         fes.writeToFile(ss, self.path + "file-tiger.svmmulti")
@@ -80,7 +81,7 @@ class Test(unittest.TestCase):
         print(f"test: {len(ss[-1].tokens)}")
 
         # test read from file for smaller file
-        one_sent = Tagger.readCoNLL(self.path+ "file-onesent.txt")
+        one_sent = self.tagger.readCoNLL(self.path+ "file-onesent.txt")
         one_fes = FeatureExtractors()
         one_fes.extractAllFeatures(one_sent)
         fes.writeToFile(one_sent, self.path + "file-onesent.svmmulti")

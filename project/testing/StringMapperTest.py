@@ -14,6 +14,7 @@ class StringMapperTest(unittest.TestCase):
 
     def setUp(self):
         self.path = "project/Data/"
+        self.tagger = Tagger()
 
     # /**
     #   Create int features from String features for a couple of tokens
@@ -58,7 +59,7 @@ class StringMapperTest(unittest.TestCase):
     #  **/
 
     def testSerialization(self):
-        sentences = Tagger.readCoNLL(self.path + "file-onesent.txt")
+        sentences = self.tagger.readCoNLL(self.path + "file-onesent.txt")
         fes = FeatureExtractors()
         # if sm is initialized like this, it is not used and remains empty
         sm = StringMapper()

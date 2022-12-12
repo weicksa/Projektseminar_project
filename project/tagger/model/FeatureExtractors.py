@@ -8,6 +8,7 @@ class FeatureExtractors(object):
     def __init__(self):
         self.mapper = StringMapper()
         self.inverse_mapper = {}
+        self.class_mapper = StringMapper()
 
     def extractFeatures(self, token):
         # call extract(prev/next/current)word, extractSuffices
@@ -25,6 +26,7 @@ class FeatureExtractors(object):
         for sentence in corpus:
             for token in sentence.tokens:
                 self.extractFeatures(token)
+                token.correctLabelIndex = self.class_mapper.lookup(token.label)
 
     def writeToFile(self, sent, filename: str):
         """

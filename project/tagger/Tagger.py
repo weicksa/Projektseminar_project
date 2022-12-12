@@ -24,16 +24,15 @@ def pipeline(train, dev):
     print("done with reading data")
 
     extractor.extractAllFeatures(training)
-    # extractor.writeToFile(training, filename)
     print("done with extraction")
-    for key in tagger.class_map.map:
-        class_count += 1
     for key in extractor.mapper.map:
         feature_count += 1
 
-    model = Perceptron(class_count, feature_count)
+    extractor.writeToFile(training, "project/Data/file_training.svmmulti")
+    class_mapper = extractor.class_mapper
+    model = Perceptron(class_mapper, feature_count)
     print("now training model")
-    model.train(training, 4)
+    model.train(training, 1)
 
     print("now making predictions")
     for sentence in develop:
@@ -47,7 +46,6 @@ def pipeline(train, dev):
     matrix.print(10)
     print(accuracy)
 
-    pass
 
 
 class Tagger(object):
@@ -58,28 +56,6 @@ class Tagger(object):
     def __init__(self):
         self.class_map = StringMapper()
 
-    @staticmethod
-    def extractInstances(data, goldLabel, predLabel):
-        # extract specific Instances from our data, with the specified gold and pred labels,
-        # also prints the context
-        for sentence in data:
-            for i in range(sentence.length()):
-                token = sentence.get(i)
-                if token.label == goldLabel and token.prediction == predLabel:
-                    try:
-                        for a in range(i - 3, i):
-                            print(f"{sentence.get(a).word}\t{sentence.get(a).label}\t{sentence.get(a).prediction}")
-                    except IndexError:
-                        pass
-                    print(f"*{token.word}*\t{token.label}\t{token.prediction}")
-                    try:
-                        for b in range(i + 1, i + 4):
-                            print(f"{sentence.get(b).word}\t{sentence.get(b).label}\t{sentence.get(b).prediction}")
-                    except IndexError:
-                        pass
-                    print("*******************")
-
-
     def readCoNLL(self, filename):
         self.class_map
         res_list = []
@@ -89,7 +65,7 @@ class Tagger(object):
             lines = source.readlines()
             length = len(lines) - 1
             sent_list = []
-        for line in lines:
+        for line in lines[:5000]:
             length -= 1
             spl = line.split()
             try:
@@ -128,7 +104,29 @@ class Tagger(object):
 
         return res_list
 
+    @staticmethod
+    def extractInstances(data, goldLabel, predLabel):
+        # extract specific Instances from our data, with the specified gold and pred labels,
+        # also prints the context
+        for sentence in data:
+            for i in range(sentence.length()):
+                token = sentence.get(i)
+                if token.label == goldLabel and token.prediction == predLabel:
+                    try:
+                        for a in range(i - 3, i):
+                            print(f"{sentence.get(a).word}\t{sentence.get(a).label}\t{sentence.get(a).prediction}")
+                    except IndexError:
+                        pass
+                    print(f"*{token.word}*\t{token.label}\t{token.prediction}")
+                    try:
+                        for b in range(i + 1, i + 4):
+                            print(f"{sentence.get(b).word}\t{sentence.get(b).label}\t{sentence.get(b).prediction}")
+                    except IndexError:
+                        pass
+                    print("*******************")
+
+
+
     # this is a comment made by Sandro
 
     # comment by tana
-

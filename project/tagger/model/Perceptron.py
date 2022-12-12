@@ -7,26 +7,25 @@ import random
 
 class Perceptron(object):
 
-    def __init__(self, numClasses, numFeatures):
-        self.weights = Weights(numClasses, numFeatures)
+    def __init__(self, class_mapper: StringMapper, numFeatures):
+        self.weights = Weights(class_mapper, numFeatures)
+        self.class_mapper = class_mapper
 
     def predict(self, token):
         # make a prediction for a tokens class based on the scoring function
         res_list = []
         # iterate over all known classes and compute the scalar for each one
         # append them to res_list in a tuple with (predicted_class, score)
-        for cl in self.weights.class_map:
-            if cl is not "bias":
-                pred = self.weights.score(cl, token.features)
-                res_list.append((cl, pred))
-            else:
-                continue
+        for cl in self.class_mapper.map.keys():
+            pred = self.weights.score(self.class_mapper.lookup(cl), token.features)
+            res_list.append((self.class_mapper.lookup(cl), pred))
 
         # sort the results by score
         sort_res = sorted(res_list, key=lambda i: i[1], reverse=True)
         prediction = sort_res[0][0]
         # the final prediction is the class with the highest score
         token.predictedLabelIndex = prediction
+        token.prediction = self.class_mapper.inverseLookup(prediction)
         return prediction
 
     def train(self, trainingData, numberOfIterations):
@@ -41,8 +40,9 @@ class Perceptron(object):
                     # wrong prediction
                     # if it's too big, decrease weights for the right class and increase them for
                     # the wrong prediction
-                    if pred != float(token.correctLabelIndex):
+                    if pred != token.correctLabelIndex:
                         if pred > token.correctLabelIndex:
-                            self.weights.update(pred, token.correctLabelIndex, token.features, -1)
+                            self.weights.update(pred, token.correctLabelIndex, token.features, -0.5)
                         else:
-                            self.weights.update(pred, token.correctLabelIndex, token.features, 1)
+                            self.weights.update(pred, token.correctLabelIndex, token.features, 0.5)
+
