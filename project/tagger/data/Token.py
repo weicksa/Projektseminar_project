@@ -11,7 +11,8 @@ class Token(object):
     '''
 
     def __init__(self, word=None, label=None, prediction=None, correctLabelIndex=None, predictedLabelIndex=None,
-                 features=[], previous=None, previous_2=None, previous_3=None, next=None, next_2=None, next_3=None):
+                 features=[], previous=None, previous_2=None, previous_3=None, next=None, next_2=None, next_3=None,
+                 length_prev=None, length_next=None):
         '''
         Constructor
         '''
@@ -23,12 +24,17 @@ class Token(object):
         self.predictedLabelIndex = predictedLabelIndex
 
         self.features = features
+
         self.previous = previous
         self.previous_2 = previous_2
         self.previous_3 = previous_3
         self.next = next
         self.next_2 = next_2
         self.next_3 = next_3
+        self.length = len(self.word)
+        self.first_letter = self.word[0]
+        self.length_prev = length_prev
+        self.length_next = length_next
 
     def toString(self):
         word_str = "None"

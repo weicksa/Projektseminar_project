@@ -75,7 +75,7 @@ class Tagger(object):
             lines = source.readlines()
             length = len(lines) - 1
             sent_list = []
-        for line in lines[:100000]:
+        for line in lines:
             length -= 1
             spl = line.split()
             try:

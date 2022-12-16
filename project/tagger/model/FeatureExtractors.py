@@ -15,13 +15,17 @@ class FeatureExtractors(object):
         # store results in one list
         features = []
         features.append(extractPrevWord(self.mapper, token))
-        features.append(extractPrev2Word(self.mapper, token))
-        features.append(extractPrev3Word(self.mapper, token))
-        features.append(extractCurrentWord(self.mapper, token))
+        #features.append(extractPrev2Word(self.mapper, token))
+        #features.append(extractPrev3Word(self.mapper, token))
+        #features.append(extractCurrentWord(self.mapper, token))
         features.append(extractNextWord(self.mapper, token))
-        features.append(extractNext2Word(self.mapper, token))
-        features.append(extractNext3Word(self.mapper, token))
+        #features.append(extractNext2Word(self.mapper, token))
+        #features.append(extractNext3Word(self.mapper, token))
         features.extend(extractSuffices(self.mapper, token))
+        features.append(extract_length(self.mapper, token))
+        #features.append(extract_length_prev(self.mapper, token))
+        #features.append(extract_length_next(self.mapper, token))
+        features.append(extract_first_letter(self.mapper, token))
         token.features = features
         # token.features -> overwrite with new feature list
 
@@ -197,3 +201,23 @@ def extractSuffices(mapper, token):
             suf_list.append(mapper.lookup("suf=" + word[a:]))
 
     return suf_list
+
+
+def extract_length(mapper, token):
+    return mapper.lookup("length=" + str(token.length))
+
+
+def extract_length_prev(mapper, token):
+    if token.previous is not None or "prev=$begin":
+        return mapper.lookup("length_prev=" + str(len(str(token.previous))))
+
+
+def extract_length_next(mapper, token):
+    if token.next is not None or "next=final$":
+        return mapper.lookup("length_next=" + str(len(str(token.next))))
+
+
+def extract_first_letter(mapper, token):
+    return mapper.lookup("first_letter=" + str(token.first_letter))
+
+
