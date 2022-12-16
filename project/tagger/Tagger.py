@@ -32,7 +32,7 @@ def pipeline(train, dev):
     class_mapper = extractor.class_mapper
     model = Perceptron(class_mapper, feature_count)
     print("now training model")
-    model.train(training, 1)
+    model.train(training, 10)
 
     print("now making predictions")
     for sentence in develop:
@@ -65,7 +65,7 @@ class Tagger(object):
             lines = source.readlines()
             length = len(lines) - 1
             sent_list = []
-        for line in lines[:5000]:
+        for line in lines[:10000]:
             length -= 1
             spl = line.split()
             try:

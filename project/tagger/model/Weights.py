@@ -14,15 +14,16 @@ class Weights(object):
                 self.class_map[class_mapper.map[key]] = {"bias": 1.0}
             for b in range(numFeatures):
                 # initialize weights with random values (attempt to fix overfitting to class 1)
-                self.class_map[class_mapper.map[key]][b] = random.randint(0, 30)
+                self.class_map[class_mapper.map[key]][b] = 0
 
     def score(self, classID, featureVector):
         # compute score as scalar for a specific class for a feature vector
         scalar = 0
         for feat in featureVector:
             if feat not in self.class_map[classID]:
-                self.class_map[classID][feat] = 1
-                scalar += 1 * self.class_map[classID][feat]
+                # self.class_map[classID][feat] = 1
+                # scalar += 1 * self.class_map[classID][feat]
+                scalar += 0
             else:
                 scalar += 1 * self.class_map[classID][feat]
         # always add the bias value to score
@@ -41,7 +42,7 @@ class Weights(object):
                 if al in self.class_map[prediction]:
                     self.class_map[prediction][al] += ((-1) * learningRate)
                 else:
-                    self.class_map[prediction][al] += ((-1) * learningRate)
+                    self.class_map[prediction][al] = ((-1) * learningRate)
 
             for el in features:
                 if el in self.class_map[correctLabelIndex]:

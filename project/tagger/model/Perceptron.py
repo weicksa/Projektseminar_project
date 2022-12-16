@@ -13,16 +13,20 @@ class Perceptron(object):
 
     def predict(self, token):
         # make a prediction for a tokens class based on the scoring function
-        res_list = []
+        res_dict = {}
         # iterate over all known classes and compute the scalar for each one
         # append them to res_list in a tuple with (predicted_class, score)
         for cl in self.class_mapper.map.keys():
             pred = self.weights.score(self.class_mapper.lookup(cl), token.features)
-            res_list.append((self.class_mapper.lookup(cl), pred))
+            if pred in res_dict:
+                res_dict[pred].append(self.class_mapper.lookup(cl))
+            else:
+                res_dict[pred] = [self.class_mapper.lookup(cl)]
+            # res_list.append((self.class_mapper.lookup(cl), pred))
 
         # sort the results by score
-        sort_res = sorted(res_list, key=lambda i: i[1], reverse=True)
-        prediction = sort_res[0][0]
+        sort_res = sorted(res_dict.keys(), reverse=True)
+        prediction = res_dict[sort_res[0]][random.randint(0, len(res_dict[sort_res[0]]) - 1)]
         # the final prediction is the class with the highest score
         token.predictedLabelIndex = prediction
         token.prediction = self.class_mapper.inverseLookup(prediction)
@@ -42,7 +46,6 @@ class Perceptron(object):
                     # the wrong prediction
                     if pred != token.correctLabelIndex:
                         if pred > token.correctLabelIndex:
-                            self.weights.update(pred, token.correctLabelIndex, token.features, -0.5)
+                            self.weights.update(pred, token.correctLabelIndex, token.features, 1)
                         else:
-                            self.weights.update(pred, token.correctLabelIndex, token.features, 0.5)
-
+                            self.weights.update(pred, token.correctLabelIndex, token.features, -1)
