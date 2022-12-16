@@ -15,12 +15,12 @@ class FeatureExtractors(object):
         # store results in one list
         features = []
         features.append(extractPrevWord(self.mapper, token))
-        #features.append(extractPrev2Word(self.mapper, token))
-        #features.append(extractPrev3Word(self.mapper, token))
+        features.append(extractPrev2Word(self.mapper, token))
+        features.append(extractPrev3Word(self.mapper, token))
         features.append(extractCurrentWord(self.mapper, token))
         features.append(extractNextWord(self.mapper, token))
-        #features.append(extractNext2Word(self.mapper, token))
-        #features.append(extractNext3Word(self.mapper, token))
+        features.append(extractNext2Word(self.mapper, token))
+        features.append(extractNext3Word(self.mapper, token))
         features.extend(extractSuffices(self.mapper, token))
         token.features = features
         # token.features -> overwrite with new feature list
