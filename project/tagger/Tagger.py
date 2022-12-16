@@ -95,12 +95,20 @@ class Tagger(object):
                 current_token = sent.get(i)
                 try:
                     current_token.previous = sent.get(i - 1).word
+                    current_token.previous_2 = sent.get(i-2).word
+                    current_token.previous_3 = sent.get(i-3).word
                 except IndexError:
                     current_token.previous = None
+                    current_token.previous_2 = None
+                    current_token.previous_3 = None
                 try:
                     current_token.next = sent.get(i + 1).word
+                    current_token.next_2 = sent.get(i+2).word
+                    current_token.next_3 = sent.get(i+3).word
                 except IndexError:
                     current_token.next = None
+                    current_token.next_2 = None
+                    current_token.next_3 = None
 
         return res_list
 

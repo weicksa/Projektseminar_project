@@ -14,10 +14,14 @@ class FeatureExtractors(object):
         # call extract(prev/next/current)word, extractSuffices
         # store results in one list
         features = []
-        features.append((extractPrevWord(self.mapper, token)))
+        features.append(extractPrevWord(self.mapper, token))
+        features.append(extractPrev2Word(self.mapper, token))
+        features.append(extractPrev3Word(self.mapper, token))
         features.append(extractCurrentWord(self.mapper, token))
         features.append(extractNextWord(self.mapper, token))
-        features.extend((extractSuffices(self.mapper, token)))
+        features.append(extractNext2Word(self.mapper, token))
+        features.append(extractNext3Word(self.mapper, token))
+        features.extend(extractSuffices(self.mapper, token))
         token.features = features
         # token.features -> overwrite with new feature list
 
@@ -112,6 +116,29 @@ def extractPrevWord(mapper, token) -> int:  # input: Token
         return mapper.lookup("prev=" + token.previous)
 
 
+def extractPrev2Word(mapper, token) -> int:
+    if token.previous is not None:
+        if token.previous_2 is None:
+            return mapper.lookup("prev_2=$begin")
+        else:
+            return mapper.lookup("prev_2=" + token.previous_2)
+    else:
+        return mapper.lookup("no_prev2")
+
+
+def extractPrev3Word(mapper, token) -> int:
+    if token.previous is not None:
+        if token.previous_2 is not None:
+            if token.previous_3 is None:
+                return mapper.lookup("prev_3=$begin")
+            else:
+                return mapper.lookup("prev_3=" + token.previous_3)
+        else:
+            return mapper.lookup("no_prev3")
+    else:
+        return mapper.lookup("no_prev3")
+
+
 def extractNextWord(mapper, token) -> int:  # input: Token
     # get next word
     # if next word is None use pseudo token
@@ -120,6 +147,29 @@ def extractNextWord(mapper, token) -> int:  # input: Token
         return mapper.lookup("next=final$")
     else:
         return mapper.lookup("next=" + token.next)
+
+
+def extractNext2Word(mapper, token) -> int:
+    if token.next is not None:
+        if token.next_2 is None:
+            return mapper.lookup("next_2=$begin")
+        else:
+            return mapper.lookup("next_2=" + token.next_2)
+    else:
+        return mapper.lookup("no_next2")
+
+
+def extractNext3Word(mapper, token) -> int:
+    if token.next is not None:
+        if token.next_2 is not None:
+            if token.next_3 is None:
+                return mapper.lookup("next_3=$begin")
+            else:
+                return mapper.lookup("next_3=" + token.next_3)
+        else:
+            return mapper.lookup("no_next3")
+    else:
+        return mapper.lookup("no_next3")
 
 
 def extractCurrentWord(mapper, token) -> int:  # input: Token
