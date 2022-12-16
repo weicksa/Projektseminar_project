@@ -33,19 +33,30 @@ class Weights(object):
     def update(self, prediction, correctLabelIndex, features, learningRate):
         # always set bias to learningRate
         for key in self.class_map.keys():
-            self.class_map[key]["bias"] = learningRate
+            self.class_map[key]["bias"] = 1
 
         # if the prediction is not correct, decrease weights for wrongly predicted class
         # and increase weights for correct class
-        if prediction != correctLabelIndex:
+        if prediction is not correctLabelIndex:
             for al in features:
                 if al in self.class_map[prediction]:
-                    self.class_map[prediction][al] += ((-1) * learningRate)
+                    self.class_map[prediction][al] += (1 * learningRate)
                 else:
-                    self.class_map[prediction][al] = ((-1) * learningRate)
+                    self.class_map[prediction][al] = (1 * learningRate)
 
             for el in features:
                 if el in self.class_map[correctLabelIndex]:
-                    self.class_map[correctLabelIndex][el] += learningRate
+                    self.class_map[correctLabelIndex][el] += ((-1) * learningRate)
                 else:
-                    self.class_map[correctLabelIndex][el] = learningRate
+                    self.class_map[correctLabelIndex][el] = ((-1) * learningRate)
+        """
+        else:
+            for al in features:
+                if al in self.class_map[prediction]:
+                    self.class_map[prediction][al] += (1 * learningRate)
+                else:
+                    self.class_map[prediction][al] = (1 * learningRate)
+        """
+
+
+

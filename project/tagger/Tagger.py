@@ -32,7 +32,7 @@ def pipeline(train, dev):
     class_mapper = extractor.class_mapper
     model = Perceptron(class_mapper, feature_count)
     print("now training model")
-    model.train(training, 10)
+    model.train(training, 2)
 
     print("now making predictions")
     for sentence in develop:
@@ -42,9 +42,19 @@ def pipeline(train, dev):
     print("now doing evaluation and ConfusionMatrix")
     matrix = ConfusionMatrix(develop)
     accuracy = Evaluation.accuracy(develop)
+    accuracy_train = Evaluation.accuracy(training)
 
     matrix.print(10)
-    print(accuracy)
+    #tagger.extractInstances(training, "IN", "NN")
+    #tagger.extractInstances(training, "NN", ",")
+    #tagger.extractInstances(training, "NN", "JJ")
+    #tagger.extractInstances(training, "NN", "VBN")
+    # print("training: ")
+    # tagger.extractInstances(training, "NN", "NN")
+    #print("develop: ")
+    #tagger.extractInstances(develop, "NN", "NN")
+    print(f"accuracy on development data: {accuracy}")
+    print(f"Accuracy on training data: {accuracy_train}")
 
 
 
@@ -65,7 +75,7 @@ class Tagger(object):
             lines = source.readlines()
             length = len(lines) - 1
             sent_list = []
-        for line in lines[:10000]:
+        for line in lines:
             length -= 1
             spl = line.split()
             try:

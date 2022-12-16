@@ -41,17 +41,27 @@ class ConfusionMatrix(object):
         labels = []
         labels.append("  ")
         labels.extend([key for key, val in self.sort[:maxDim]])
-        print(labels)
+        label_helper = labels.copy()
+        label_format = []
+        for label in label_helper:
+            label_format.append(label + ((4 - len(label))*" "))
+        print(label_format)
         vals = []
         for el in labels[1:]:
-            vals.append(el)
+            vals.append(el + ((4-len(el)) * " "))
             for lab in labels[1:]:
                 try:
-                    vals.append(self.matrix[el][lab])
+                    vals.append(str(self.matrix[el][lab]) + ((4 - len(str(self.matrix[el][lab]))) * " "))
                 except KeyError:
-                    vals.append(0)
+                    vals.append(str(0) + (3 * " "))
             print(f"{vals}")
             vals.clear()
+
+        """
+        for gold in labels[1:]:
+            for pred in labels[1:]:
+                print(f"gold:{gold} pred:{pred} errors: {self.numberErrors(gold, pred)}")
+        """
 
 
 
