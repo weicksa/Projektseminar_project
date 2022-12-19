@@ -24,7 +24,7 @@ class PerceptronTest(unittest.TestCase):
         self.class_mapper = StringMapper()
         self.class_mapper.lookup(1)
         self.class_mapper.lookup(2)
-        self.class_mapper.lookup(3)
+        self.class_mapper.lookup(0)
 
     def testWeights(self):
         mapper = self.class_mapper
@@ -32,17 +32,17 @@ class PerceptronTest(unittest.TestCase):
 
         # // first, try to update the weights with a feature vector
         featureVector1 = [1, 2, 3]
-        weights.update(1, 2, featureVector1, -0.5)
+        weights.update(2, 1, featureVector1, 0.5)
         score1 = weights.score(1, featureVector1)
-        self.assertAlmostEqual(-2, score1, 2, "Score should be 4 * -0.5 = -2")
+        self.assertAlmostEqual(-0.5, score1, 2, "Score should be 3 * -0.5 + 1 = -0.5")
 
         # // now try to score another feature vector
         featureVector2 = [1, 2, 99]
-        score2 = weights.score(0, featureVector2)
-        self.assertAlmostEqual(1.5, score2, 2, "Score should be 3 * 0.5 = 1.5")
+        score2 = weights.score(1, featureVector2)
+        self.assertAlmostEqual(0.0, score2, 2, "Score should be 2 * -0.5 + 1.0 = 2.0")
 
     def testPerceptron(self):
-        perceptron = Perceptron(3, 10)
+        perceptron = Perceptron(self.class_mapper, 10)
         trainSentenceList = self.generateTrainSentences()
 
         perceptron.train(trainSentenceList, 3)
