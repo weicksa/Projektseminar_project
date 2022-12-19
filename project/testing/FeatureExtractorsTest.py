@@ -11,6 +11,8 @@ from ..tagger.model.FeatureExtractors import FeatureExtractors
 """
 changed Tagger.readData to Tagger.readCoNLL, because Tagger.readData does not exist
 changed self.filename to self.path and changed all file imports and exports accordingly
+
+Added new features - changed test accordingly!!!
 """
 
 
@@ -26,19 +28,19 @@ class Test(unittest.TestCase):
         fes = FeatureExtractors()
         for token in s.tokens:
             fes.extractFeatures(token)
-        self.assertEqual(4, len(s.get(0).features))
-        self.assertEqual(6, len(s.get(1).features))
-        self.assertEqual(7, len(s.get(2).features))
-        self.assertEqual(6, len(s.get(3).features))
-        self.assertEqual(8, len(s.get(4).features))
-        self.assertEqual(5, len(s.get(5).features))
-        self.assertEqual(8, len(s.get(6).features))
-        self.assertEqual(8, len(s.get(7).features))
-        self.assertEqual(4, len(s.get(8).features))
+        self.assertEqual(6, len(s.get(0).features))
+        self.assertEqual(8, len(s.get(1).features))
+        self.assertEqual(9, len(s.get(2).features))
+        self.assertEqual(8, len(s.get(3).features))
+        self.assertEqual(10, len(s.get(4).features))
+        self.assertEqual(7, len(s.get(5).features))
+        self.assertEqual(10, len(s.get(6).features))
+        self.assertEqual(10, len(s.get(7).features))
+        self.assertEqual(6, len(s.get(8).features))
         self.assertEqual(0, self.intersection(s.get(0).features, s.get(1).features))
         self.assertEqual(0, self.intersection(s.get(1).features, s.get(2).features))
         self.assertEqual(1, self.intersection(s.get(2).features, s.get(4).features))
-        self.assertEqual(1, self.intersection(s.get(6).features, s.get(7).features))
+        self.assertEqual(3, self.intersection(s.get(6).features, s.get(7).features))
         self.assertEqual(0, self.intersection(s.get(3).features, s.get(5).features))
         self.assertEqual(0, self.intersection(s.get(2).features, s.get(5).features))
         # print("Features: {}".format(s.get(0).features))
@@ -47,19 +49,19 @@ class Test(unittest.TestCase):
         ss = self.tagger.readCoNLL(self.path + "file-onesent.txt")
         FeatureExtractors().extractAllFeatures(ss)
         s = ss[0]
-        self.assertEqual(4, len(s.get(0).features))
-        self.assertEqual(6, len(s.get(1).features))
-        self.assertEqual(7, len(s.get(2).features))
-        self.assertEqual(6, len(s.get(3).features))
-        self.assertEqual(8, len(s.get(4).features))
-        self.assertEqual(5, len(s.get(5).features))
-        self.assertEqual(8, len(s.get(6).features))
-        self.assertEqual(8, len(s.get(7).features))
-        self.assertEqual(4, len(s.get(8).features))
+        self.assertEqual(6, len(s.get(0).features))
+        self.assertEqual(8, len(s.get(1).features))
+        self.assertEqual(9, len(s.get(2).features))
+        self.assertEqual(8, len(s.get(3).features))
+        self.assertEqual(10, len(s.get(4).features))
+        self.assertEqual(7, len(s.get(5).features))
+        self.assertEqual(10, len(s.get(6).features))
+        self.assertEqual(10, len(s.get(7).features))
+        self.assertEqual(6, len(s.get(8).features))
         self.assertEqual(0, self.intersection(s.get(0).features, s.get(1).features))
         self.assertEqual(0, self.intersection(s.get(1).features, s.get(2).features))
         self.assertEqual(1, self.intersection(s.get(2).features, s.get(4).features))
-        self.assertEqual(1, self.intersection(s.get(6).features, s.get(7).features))
+        self.assertEqual(3, self.intersection(s.get(6).features, s.get(7).features))
         self.assertEqual(0, self.intersection(s.get(3).features, s.get(5).features))
         self.assertEqual(0, self.intersection(s.get(2).features, s.get(5).features))
 

@@ -31,8 +31,12 @@ class Token(object):
         self.next = next
         self.next_2 = next_2
         self.next_3 = next_3
-        self.length = len(self.word)
-        self.first_letter = self.word[0]
+        try:
+            self.length = len(self.word)
+            self.first_letter = self.word[0]
+        except TypeError:
+            self.length = None
+            self.first_letter = None
         self.length_prev = length_prev
         self.length_next = length_next
 

@@ -11,15 +11,28 @@ from ..tagger.model.Perceptron import Perceptron
 from ..tagger.data.Sentence import Sentence
 from ..tagger.data.Token import Token
 
+from ..tagger.data.StringMapper import StringMapper
+
+"""
+Changed arguments for Perceptron and Weight class !!!
+"""
+
 
 class PerceptronTest(unittest.TestCase):
 
+    def setUp(self) -> None:
+        self.class_mapper = StringMapper()
+        self.class_mapper.lookup(1)
+        self.class_mapper.lookup(2)
+        self.class_mapper.lookup(3)
+
     def testWeights(self):
-        weights = Weights(3,10)
+        mapper = self.class_mapper
+        weights = Weights(self.class_mapper, 10)
 
         # // first, try to update the weights with a feature vector
         featureVector1 = [1, 2, 3]
-        weights.update(1, 0, featureVector1, 0.5)
+        weights.update(1, 2, featureVector1, -0.5)
         score1 = weights.score(1, featureVector1)
         self.assertAlmostEqual(-2, score1, 2, "Score should be 4 * -0.5 = -2")
 
