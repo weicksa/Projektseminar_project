@@ -24,6 +24,7 @@ def pipeline(train, dev):
     print("done with reading data")
 
     extractor.extractAllFeatures(training)
+    extractor.extractAllFeatures(develop)
     print("done with extraction")
     for key in extractor.mapper.map:
         feature_count += 1
