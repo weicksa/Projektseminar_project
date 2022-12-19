@@ -54,7 +54,7 @@ class Perceptron(object):
 					for cl in pred[:-1]:
 						if cl != token.correctLabelIndex:
 							# if the predicted class is wrong, lower its score, else increase it
-							self.weights.update(cl, token.correctLabelIndex, token.features, -0.5)
+							self.weights.update(cl, token.correctLabelIndex, token.features, -1.0)
 
 						else:
-							self.weights.update(cl, token.correctLabelIndex, token.features, 0.1)
+							self.weights.update(cl, token.correctLabelIndex, token.features, 1.0)

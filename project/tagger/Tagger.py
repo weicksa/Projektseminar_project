@@ -33,7 +33,7 @@ def pipeline(train, dev):
     class_mapper = extractor.class_mapper
     model = Perceptron(class_mapper, feature_count)
     print("now training model")
-    model.train(training, 2)
+    model.train(training, 3)
 
     print("now making predictions")
     for sentence in develop:
@@ -46,14 +46,6 @@ def pipeline(train, dev):
     accuracy_train = Evaluation.accuracy(training)
 
     matrix.print(10)
-    #tagger.extractInstances(training, "IN", "NN")
-    #tagger.extractInstances(training, "NN", ",")
-    #tagger.extractInstances(training, "NN", "JJ")
-    #tagger.extractInstances(training, "NN", "VBN")
-    # print("training: ")
-    # tagger.extractInstances(training, "NN", "NN")
-    #print("develop: ")
-    #tagger.extractInstances(develop, "NN", "NN")
     print(f"accuracy on development data: {accuracy}")
     print(f"Accuracy on training data: {accuracy_train}")
 
